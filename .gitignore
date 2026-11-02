@@ -1,0 +1,5 @@
+# env and configuration files
+
+*package-lock.json
+*env
+*venv
