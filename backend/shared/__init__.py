@@ -1,3 +1,3 @@
-from .base_model import BaseOrm
+from .base_model import BaseSqlModel
 
-__all__ = ["BaseOrm"]
+__all__ = ["BaseSqlModel"]
