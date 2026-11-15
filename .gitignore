@@ -3,3 +3,10 @@
 *package-lock.json
 *env
 *venv
+*poetry.lock
+*__pycache__
+.vscode
+
+#database
+
+*.db
