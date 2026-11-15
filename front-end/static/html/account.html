@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Consulte as informações da sua conta."
+    />
+    <title>Conta | Gerenciador de arquivos</title>
+    <link rel="stylesheet" href="../styles/home.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a
+        class="brand"
+        href="index.html"
+        aria-label="Página inicial do gerenciador de arquivos"
+      >
+        <span class="brand-mark" aria-hidden="true">F</span>
+        <span>Gerenciador de arquivos</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a href="index.html#settings">Configurações</a>
+        <a class="nav-link-active" href="account.html" aria-current="page">Conta</a>
+        <a href="index.html#files">Arquivos</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="account-card" aria-labelledby="account-title">
+        <span class="eyebrow">SUA CONTA</span>
+        <h1 id="account-title">Dados da conta</h1>
+        <p class="account-intro">Atualize as informações do seu perfil.</p>
+
+        <form class="account-form">
+          <div class="form-field">
+            <label for="account-name">Nome</label>
+            <input
+              id="account-name"
+              name="name"
+              type="text"
+              autocomplete="name"
+              placeholder="Seu nome"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="account-category">Categoria</label>
+            <input
+              id="account-category"
+              name="category"
+              type="text"
+              value="—"
+              readonly
+              aria-readonly="true"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="account-email">E-mail</label>
+            <input
+              id="account-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              placeholder="seu@email.com"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="account-password">Nova senha</label>
+            <input
+              id="account-password"
+              name="password"
+              type="password"
+              autocomplete="new-password"
+              placeholder="Digite sua nova senha"
+              required
+            />
+          </div>
+
+          <p class="password-note">
+            A senha atual não é exibida. Informe uma nova senha para alterá-la.
+          </p>
+
+          <div class="form-actions">
+            <button type="button" disabled>Salvar alterações</button>
+            <p role="status">O salvamento estará disponível quando a atualização da conta for integrada.</p>
+          </div>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>
