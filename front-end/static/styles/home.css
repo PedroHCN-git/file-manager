@@ -105,6 +105,50 @@ main {
   text-align: center;
 }
 
+.account-card {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: clamp(28px, 6vw, 48px);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-surface);
+}
+
+.account-card h1 {
+  margin-bottom: 8px;
+}
+
+.account-intro {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.account-details {
+  margin: 32px 0 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.account-field {
+  display: grid;
+  grid-template-columns: minmax(100px, 0.35fr) 1fr;
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 14px;
+}
+
+.account-field dt {
+  color: var(--color-muted);
+}
+
+.account-field dd {
+  overflow-wrap: anywhere;
+  margin: 0;
+  font-weight: 500;
+}
+
 .eyebrow {
   color: var(--color-muted);
   font-size: 10px;
@@ -187,5 +231,10 @@ h1 {
   .empty-state {
     min-height: 140px;
     margin-top: 30px;
+  }
+
+  .account-field {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
