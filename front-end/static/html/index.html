@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Um espaço simples e organizado para seus arquivos e sua conta."
+    />
+    <title>Gerenciador de arquivos</title>
+    <link rel="stylesheet" href="../styles/home.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#files" aria-label="Página inicial do gerenciador de arquivos">
+        <span class="brand-mark" aria-hidden="true">F</span>
+        <span>Gerenciador de arquivos</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a href="#settings">Configurações</a>
+        <a href="#account">Conta</a>
+        <a class="nav-link-active" href="#files" aria-current="page">Arquivos</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="welcome-card" id="files" aria-labelledby="welcome-title">
+        <span class="eyebrow">SEU ESPAÇO PESSOAL</span>
+        <h1 id="welcome-title">Seus arquivos em um só lugar.</h1>
+        <p>Um espaço simples para manter tudo organizado.</p>
+        <div class="empty-state" aria-label="Nenhum arquivo ainda">
+          <span class="empty-state-icon" aria-hidden="true">+</span>
+          <span>Seus arquivos aparecerão aqui.</span>
+        </div>
+      </section>
+
+      <section class="placeholder-section" id="settings" aria-label="Configurações"></section>
+      <section class="placeholder-section" id="account" aria-label="Conta"></section>
+    </main>
+  </body>
+</html>
