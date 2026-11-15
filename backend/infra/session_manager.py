@@ -7,3 +7,7 @@ engine = create_engine("sqlite:///backend/infra/database.db", echo=True)
 BaseSqlModel.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
+
+
+def create_tables() -> None:
+    BaseSqlModel.metadata.create_all(engine)
