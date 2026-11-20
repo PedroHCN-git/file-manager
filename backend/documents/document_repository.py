@@ -25,6 +25,33 @@ class DocumentRepository:
 
             s.add(doc_info)
             s.commit()
+            s.refresh(document)
+            return document
+
+    def save_many(
+        self,
+        documents: list[DocumentSqlModel],
+    ) -> list[DocumentSqlModel]:
+        with Session() as session:
+            session.add_all(documents)
+            session.commit()
+            for document in documents:
+                session.refresh(document)
+            return documents
+
+    def get(self, doc_id: int, category: str) -> DocumentSqlModel | None:
+        with Session() as s:
+            return s.scalar(
+                select(DocumentSqlModel)
+                .join(
+                    UserSqlModel,
+                    DocumentSqlModel.owner_user_id == UserSqlModel.user_id,
+                )
+                .where(
+                    DocumentSqlModel.doc_id == doc_id,
+                    UserSqlModel.category == category,
+                )
+            )
 
     def get_all(
             self,
@@ -65,7 +92,7 @@ class DocumentRepository:
 
         return result
 
-    def delete(self, doc_id: int):
+    def delete(self, doc_id: int, owner_user_id: int) -> str | None:
         with Session.begin() as s:
             document = s.get(DocumentInfoSqlModel, doc_id)
             if document is not None:

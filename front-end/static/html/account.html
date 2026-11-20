@@ -22,7 +22,7 @@
       </a>
 
       <nav class="main-nav" aria-label="Navegação principal">
-        <a href="index.html#settings">Configurações</a>
+        <a href="settings.html">Configurações</a>
         <a class="nav-link-active" href="account.html" aria-current="page">Conta</a>
         <a href="index.html#files">Arquivos</a>
       </nav>
@@ -34,7 +34,7 @@
         <h1 id="account-title">Dados da conta</h1>
         <p class="account-intro">Atualize as informações do seu perfil.</p>
 
-        <form class="account-form">
+        <form class="account-form" id="account-form">
           <div class="form-field">
             <label for="account-name">Nome</label>
             <input
@@ -43,6 +43,8 @@
               type="text"
               autocomplete="name"
               placeholder="Seu nome"
+              required
+              disabled
             />
           </div>
 
@@ -55,6 +57,7 @@
               value="—"
               readonly
               aria-readonly="true"
+              disabled
             />
           </div>
 
@@ -66,6 +69,8 @@
               type="email"
               autocomplete="email"
               placeholder="seu@email.com"
+              required
+              disabled
             />
           </div>
 
@@ -77,7 +82,8 @@
               type="password"
               autocomplete="new-password"
               placeholder="Digite sua nova senha"
-              required
+              minlength="8"
+              disabled
             />
           </div>
 
@@ -86,11 +92,16 @@
           </p>
 
           <div class="form-actions">
-            <button type="button" disabled>Salvar alterações</button>
-            <p role="status">O salvamento estará disponível quando a atualização da conta for integrada.</p>
+            <button id="account-save" type="submit" disabled>
+              Salvar alterações
+            </button>
+            <p id="account-status" role="status" aria-live="polite">
+              Carregando informações da conta...
+            </p>
           </div>
         </form>
       </section>
     </main>
+    <script src="../../src/modules/account.js" defer></script>
   </body>
 </html>

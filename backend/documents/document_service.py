@@ -25,8 +25,23 @@ class DocumentService():
         sql_model = self.mapper.map_in(document=document)
         return self.repository.save(sql_model)
 
-    def delete(self, doc_id: int):
-        return self.repository.delete(doc_id=doc_id)
+    def save_many(
+        self,
+        documents: list[DocumentIn],
+        owner_user_id: int,
+    ) -> list[DocumentOut]:
+        sql_models = [
+            self.mapper.map_in(
+                document=document,
+                owner_user_id=owner_user_id,
+            )
+            for document in documents
+        ]
+        saved_documents = self.repository.save_many(sql_models)
+        return [
+            self.mapper.map_out(document)
+            for document in saved_documents
+        ]
 
     def get_all(
             self,
