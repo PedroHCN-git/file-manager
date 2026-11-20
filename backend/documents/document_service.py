@@ -1,24 +1,29 @@
 from backend.documents.document_mapper import (
-    DocumentMapper,
-    DocumentIn,
-    DocumentOut,
+    DocumentInfoMapper,
+    DocumentInfo,
+    DocumentInfoOut,
+    DocumentInfoFilter,
+    DocumentInfoUpdate
 )
 from backend.documents.document_repository import DocumentRepository
-from backend.documents.document_storage import remove_stored_upload
+from fastapi import UploadFile
+
+from typing import Optional
+from pathlib import Path
+import uuid
+import shutil
 
 class DocumentService():
 
+    UPLOAD_DIR = Path(__file__).parent.parent / "upload"
+
     def __init__(self, repository: DocumentRepository):
-        self.mapper = DocumentMapper()
+        self.mapper = DocumentInfoMapper()
         self.repository = repository
 
-    def save(self, document: DocumentIn, owner_user_id: int) -> DocumentOut:
-        sql_model = self.mapper.map_in(
-            document=document,
-            owner_user_id=owner_user_id,
-        )
-        saved_document = self.repository.save(sql_model)
-        return self.mapper.map_out(saved_document)
+    def save_info(self, document: DocumentInfo | DocumentInfoUpdate):
+        sql_model = self.mapper.map_in(document=document)
+        return self.repository.save(sql_model)
 
     def save_many(
         self,
@@ -38,34 +43,40 @@ class DocumentService():
             for document in saved_documents
         ]
 
-    def delete(self, doc_id: int, owner_user_id: int) -> bool:
-        doc_path = self.repository.delete(
-            doc_id=doc_id,
-            owner_user_id=owner_user_id,
-        )
-        if doc_path is None:
-            return False
-        remove_stored_upload(doc_path)
-        return True
-
-    def get(self, doc_id: int, category: str) -> DocumentOut | None:
-        result = self.repository.get(doc_id=doc_id, category=category)
-        return self.mapper.map_out(result) if result is not None else None
-
-    def get_for_download(
-        self,
-        doc_id: int,
-        category: str,
-    ) -> tuple[DocumentOut, str] | None:
-        result = self.repository.get(doc_id=doc_id, category=category)
-        if result is None:
-            return None
-        return self.mapper.map_out(result), result.doc_path
-
     def get_all(
-        self,
-        category: str,
-        name: str | None = None,
-    ) -> list[DocumentOut]:
-        documents = self.repository.get_all(category=category, name=name)
-        return [self.mapper.map_out(document) for document in documents]
+            self,
+            doc_filter: Optional[DocumentInfoFilter] = DocumentInfoFilter()
+        ) -> list[DocumentInfoOut]:
+        result = self.repository.get_all(doc_filter=doc_filter)
+
+        return [self.mapper.map_out(line) for line in result]
+
+    def get_one(self, doc_id: int):
+        return self.repository.get_one(doc_id=doc_id)
+
+    def upload_file(
+            self,
+            doc_description: str,
+            file: UploadFile,
+            doc_id: Optional[int] = None,
+        ):
+
+        file_path = None
+        
+        if doc_id:
+            file_path = self.get_one(doc_id=doc_id).doc_path
+        else:
+            file_path =  self.UPLOAD_DIR / f'{uuid.uuid3(uuid.NAMESPACE_X500, file.filename).int}.{file.filename.split('.')[-1]}'
+        
+
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        self.save_info(
+            DocumentInfo(
+                doc_id=doc_id,
+                doc_name=file.filename,
+                doc_path=str(file_path),
+                doc_description=doc_description
+            )
+        )
