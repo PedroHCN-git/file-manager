@@ -29,6 +29,7 @@ class DocumentUpdate(BaseModel):
 
 class DocumentOut(BaseModel):
 
+    doc_id: int
     doc_name: str
 
 class DocumentFilter(BaseModel):
@@ -49,15 +50,21 @@ class DocumentFilter(BaseModel):
 
 class DocumentMapper():
 
-    def map_in(self, document: DocumentUpdate | DocumentIn):
+    def map_in(
+        self,
+        document: DocumentUpdate | DocumentIn,
+        owner_user_id: int,
+    ) -> DocumentSqlModel:
         return DocumentSqlModel(
             doc_id=document.doc_id,
             doc_name=document.doc_name,
-            doc_path=document.doc_path
+            doc_path=document.doc_path,
+            owner_user_id=owner_user_id,
         )
 
     def map_out(self, document: DocumentSqlModel):
 
         return DocumentOut(
+            doc_id=document.doc_id,
             doc_name=document.doc_name
         )

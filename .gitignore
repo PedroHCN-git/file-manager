@@ -10,3 +10,4 @@
 #database
 
 *.db
+/backend/upload

@@ -1,4 +1,5 @@
-from backend.users.user_mapper import UserIn, UserMapper, UserOut
+from backend.users.user_mapper import UserIn, UserMapper, UserOut, UserUpdate
+from backend.users.password import hash_password
 from backend.users.user_repository import UserRepository
 
 
@@ -14,6 +15,15 @@ class UserService:
 
     def get(self, user_id: int) -> UserOut | None:
         user = self.repository.get(user_id=user_id)
+        if user is None:
+            return None
+        return self.mapper.map_out(user)
+
+    def update(self, user_id: int, changes: UserUpdate) -> UserOut | None:
+        values = changes.model_dump(exclude_unset=True)
+        if "password" in values:
+            values["password"] = hash_password(values["password"])
+        user = self.repository.update(user_id=user_id, changes=values)
         if user is None:
             return None
         return self.mapper.map_out(user)
